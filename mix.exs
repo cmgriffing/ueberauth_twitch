@@ -1,13 +1,13 @@
-defmodule UeberauthTwitter.Mixfile do
+defmodule UeberauthTwitch.Mixfile do
   use Mix.Project
 
   @version "0.3.0"
-  @url "https://github.com/ueberauth/ueberauth_twitter"
+  @url "https://github.com/ueberauth/ueberauth_twitch"
 
   def project do
-    [app: :ueberauth_twitter,
+    [app: :ueberauth_twitch,
      version: @version,
-     name: "Ueberauth Twitter Strategy",
+     name: "Ueberauth Twitch Strategy",
      package: package(),
      elixir: "~> 1.1",
      build_embedded: Mix.env == :prod,
@@ -20,7 +20,7 @@ defmodule UeberauthTwitter.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :httpoison, :oauther, :ueberauth]]
+    [applications: [:logger, :httpoison, :oauther, :oauth2, :ueberauth]]
   end
 
   defp deps do
@@ -28,6 +28,7 @@ defmodule UeberauthTwitter.Mixfile do
      {:httpoison, "~> 1.0"},
      {:oauther, "~> 1.1"},
      {:ueberauth, "~> 0.6"},
+     {:oauth2, "~> 1.0"},
 
      # dev/test dependencies
      {:earmark, ">= 0.0.0", only: :dev},
@@ -45,7 +46,7 @@ defmodule UeberauthTwitter.Mixfile do
   end
 
   defp description do
-    "An Uberauth strategy for Twitter authentication."
+    "An Uberauth strategy for Twitch authentication."
   end
 
   defp package do
