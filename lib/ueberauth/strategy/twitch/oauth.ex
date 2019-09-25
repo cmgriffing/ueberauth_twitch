@@ -31,7 +31,10 @@ defmodule Ueberauth.Strategy.Twitch.OAuth do
   Generate Authentication: Basic Base64<CLIENT_ID>:<CLIENT_SECRET>
   """
   def auth_sig(opts \\ []) do
+    IO.inspect("auth_sig")
+    IO.inspect(opts)
     opts = options(opts)
+    IO.inspect(opts)
     sig = Base.encode64(opts[:client_id] <> ":" <> opts[:client_secret])
 
     "Basic #{sig}"
