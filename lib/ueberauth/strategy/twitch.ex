@@ -42,7 +42,7 @@ defmodule Ueberauth.Strategy.Twitch do
     else
       IO.inspect("OAUTH: fetching user")
       # We need to reset the client in the token here because it has basic auth in the headers
-      fetch_user(conn, Map.put(token, :client, Ueberauth.Strategy.Twitch.OAuth.client))
+      fetch_user(conn, Map.put(token, :client, Ueberauth.Strategy.Twitch.OAuth.client), opts)
     end
   end
 
@@ -109,14 +109,18 @@ defmodule Ueberauth.Strategy.Twitch do
     }
   end
 
-  defp fetch_user(conn, token) do
+  defp fetch_user(conn, token, opts) do
     conn = put_private(conn, :twitch_token, token)
 
-    case Ueberauth.Strategy.Twitch.OAuth.get(token, "/helix/users") do
+    case Ueberauth.Strategy.Twitch.OAuth.get(token, "/helix/users", [
+      "Client-ID": opts[:client_id]
+    ]) do
       { :ok, %OAuth2.Response{status_code: 401, body: _body } } ->
         set_errors!(conn, [error("token", "unauthorized")])
+
       { :ok, %OAuth2.Response{ status_code: status_code, body: res } } when status_code in 200..399 ->
         put_private(conn, :twitch_user, res)
+
       { :error, %OAuth2.Error{ reason: reason } } ->
         set_errors!(conn, [error("OAuth2", reason)])
     end
